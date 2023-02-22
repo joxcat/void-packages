@@ -14,7 +14,7 @@ checksum="f5c2468127c363b3a3d2fa5857b6ff0979eeaf1485c1afb114b3929c1fc4a7df
  0739424395377f56c9528c1169ef72d6a941e21f1bc9d728481bf5de8563bf01"
 _filename="1password-${version}.x64.tar.gz"
 _1passworddir="${_filename%.tar.*}"
-_license_checksum=b8f6ff9297488416f3d8063a151109ed5e8a2df6fa546856a4beaa715cbc0fda
+_license_checksum=75de41c3067bbca89f9550461f95cf28b34be5099bc4694fc240ae8be3e6c6bf
 _gpg_key=3FEF9748469ADBE15DA7CA80AC2D62742012EA22
 system_groups="_onepassword"
 repository=nonfree
