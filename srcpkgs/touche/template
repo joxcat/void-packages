@@ -1,0 +1,18 @@
+pkgname=touche
+version=2.0.8
+revision=1
+build_style=meson
+short_desc="The desktop application to configure Touchégg"
+maintainer="Johan Planchon <dev@johan.moe>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/JoseExposito/touche"
+distfiles="https://github.com/JoseExposito/touche/archive/${version}.tar.gz"
+checksum="7d9c2594c5db1bd3c343f398910c1d1a62393ecde7d44b3af55e6a0f6ca3ef72"
+depends="gjs libadwaita touchegg"
+hostmakedepends="gjs gobject-introspection nodejs pkg-config gettext "
+makedepends="glib-devel"
+
+pre_build() {
+  export npm_config_cache="$PWD/npm_cache"
+  npm install
+}
