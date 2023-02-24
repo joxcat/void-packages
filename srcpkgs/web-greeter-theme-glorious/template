@@ -1,0 +1,24 @@
+pkgname=web-greeter-theme-glorious
+version=2.0.5
+revision=1
+build_style=fetch
+hostmakedepends="tar"
+short_desc="A sleek, modern and glorified LightDM webkit2 theme"
+maintainer="Johan Planchon <dev@johan.moe>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/manilarome/lightdm-webkit2-theme-glorious"
+distfiles="https://github.com/manilarome/lightdm-webkit2-theme-glorious/releases/download/v${version}/lightdm-webkit2-theme-glorious-${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum="13a3964678a8025e52fb3263b483b683856e9d39db2a5167daed71aa1de0fb85"
+
+do_install() {
+  mkdir glorious
+  archive="${pkgname}-${version}.tar.gz"
+  mv $archive glorious
+  pushd glorious
+  tar xf $archive
+  rm $archive
+  popd
+  mkdir -p ${DESTDIR}/usr/share/web-greeter/themes
+  mv glorious ${DESTDIR}/usr/share/web-greeter/themes/glorious
+}
+
