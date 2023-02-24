@@ -1,0 +1,62 @@
+pkgname=nody-greeter
+version=1.5.2
+revision=1
+conf_files="/etc/lightdm/web-greeter.yml /etc/lightdm/Xgreeter /etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf"
+hostmakedepends="base-devel nodejs python3"
+makedepends="base-devel libxcb-devel libX11-devel liblightdm-gobject gobject-introspection cairo git"
+depends="lightdm liblightdm-gobject libgirepository"
+short_desc="LightDM greeter made with node.js"
+maintainer="JezerM <amyuki4@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/JezerM/nody-greeter"
+distfiles="https://github.com/JezerM/nody-greeter/archive/${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum="f4e41470e9a3c97d491a2d7128c8bf0863af0d4b15e5801f4d33dc37b802d188"
+mutable_files="/usr/share/web-greeter/*"
+
+get_target_arch() {
+	case ${XBPS_TARGET_MACHINE} in
+		x86_64*)
+			echo "x64"
+			;;
+		i686*)
+			echo "ia32"
+			;;
+		aarch64*)
+			echo "arm64"
+			;;
+		armv*)
+			echo "arm"
+			;;
+		*)
+			echo ${XBPS_TARGET_MACHINE}
+	esac
+}
+
+_target_arch=$(get_target_arch)
+export npm_config_arch=${_target_arch}
+
+pre_build() {
+	echo "Trying to install npm packages as ${npm_config_arch}"
+	npm clean-install
+	rm -rf themes
+	git clone https://github.com/JezerM/web-greeter-themes.git --depth 1 --recursive themes
+	pushd themes
+	git checkout 44283ca
+	popd
+}
+
+do_build() {
+	echo "Trying to build ${XBPS_TARGET_MACHINE} as ${_target_arch}"
+	npm run rebuild
+	npm run build:tsc
+	node make build --DEST_DIR="${DESTDIR}" --ARCH="${_target_arch}"
+}
+
+do_install() {
+	node make install --DEST_DIR="${DESTDIR}"
+}
+
+post_install() {
+	rm -f ${DESTDIR}/usr/bin/nody-greeter
+	ln -s /opt/nody-greeter/nody-greeter ${DESTDIR}/usr/bin/nody-greeter
+}
