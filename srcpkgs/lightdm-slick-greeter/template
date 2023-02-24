@@ -4,14 +4,15 @@ version=1.6.1
 revision=1
 wrksrc="slick-greeter-${version}"
 build_style=gnu-configure
-hostmakedepends="automake pkg-config intltool gettext-devel glib-devel vala-devel"
+conf_files="/etc/lightdm/lightdm-slick-greeter.conf"
+hostmakedepends="automake pkg-config intltool gettext-devel glib-devel vala-devel cairo freetype gtk+3 libcanberra lightdm pixman python xorg-server"
 makedepends="lightdm-devel libxklavier-devel gtk+3-devel libcanberra-devel"
 short_desc="Lightdm Slick Greeter"
 maintainer="chgt <christian.gimbatti@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/linuxmint/slick-greeter"
 distfiles="https://github.com/linuxmint/slick-greeter/archive/${version}.tar.gz"
-checksum=55750c9ed3967812a05c918faa65c9dbd686b72bc565a290cb903a2f027f3b4d
+checksum=4a64b71d5bfeb57f87116a349792910e97cb20cc0bf48b28f80afc0bb4feeb88
 
 pre_configure() {
 	aclocal --install
