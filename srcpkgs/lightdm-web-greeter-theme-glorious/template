@@ -1,4 +1,4 @@
-pkgname=web-greeter-theme-glorious
+pkgname=lightdm-web-greeter-theme-glorious
 version=2.0.5
 revision=1
 build_style=fetch
