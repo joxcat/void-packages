@@ -1,16 +1,35 @@
 pkgname=lightdm-web-greeter
 version=3.5.2
 revision=1
-build_style=fetch
-hostmakedepends="automake pkg-config lightdm python xorg-server rsync"
-makedepends="lightdm-devel"
-short_desc="A modern, visually appealing greeter for LightDM. "
+short_desc="A modern, visually appealing greeter for LightDM."
 maintainer="Johan Planchon <dev@johan.moe>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/JezerM/web-greeter"
-distfiles="https://github.com/JezerM/web-greeter/archive/${version}.tar.gz"
-checksum=fbebb26f66d1c22ea1d19ab76d3277d4382dec88d5ff70d32686bea2bcfd7357
+distfiles="https://github.com/JezerM/web-greeter/archive/${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum="fbebb26f66d1c22ea1d19ab76d3277d4382dec88d5ff70d32686bea2bcfd7357"
+hostmakedepends="pkg-config rsync git nodejs python3-PyQt5-devel-tools libX11 libxcb"
+makedepends="libX11-devel"
+depends="libX11 libxcb gobject-introspection qt5-webengine python3-inotify python3-yaml python3-PyQt5-webengine python3-PyQt5 python3-gobject liblightdm-gobject"
+
+pre_build() {
+	rm -rf themes
+	git clone https://github.com/JezerM/web-greeter-themes.git --depth 1 --recursive themes
+	pushd themes
+	git checkout 44283ca
+	popd
+  
+  mkdir -p /etc
+  echo 'ID="void"' >> /etc/os-release
+  
+  export npm_config_cache="$PWD/npm_cache"
+  npm i -g typescript
+}
+
+do_build() {
+  make build
+}
 
 do_install() {
-  make install DESTDIR=${DESTDIR}
+	make install DESTDIR="${DESTDIR}"
+  sed -i 's|^#!/usr/bin/env python|#!/usr/bin/env python3|' "${DESTDIR}/usr/lib/web-greeter/bridge/__init__.py"
 }
